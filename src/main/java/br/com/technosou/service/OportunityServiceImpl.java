@@ -56,24 +56,38 @@ public class OportunityServiceImpl implements OpportunityService {
 
     @Override
     public List<OpportunityDTO> generateOpportunityData() {
-        return null;
+        List<OpportunityDTO> opportunities = new ArrayList<>();
+
+        opportunityRepository
+                .findAll()
+                .stream()
+                .forEach(it -> {
+                    opportunities.add(OpportunityDTO.builder()
+                            .proposalId(it.getProposalId())
+                            .customer(it.getCustomer())
+                            .priceTonner(it.getPriceTonner())
+                            .lastDollarQuotation(it.getLastDollarQuotation())
+                            .build()
+                    );
+                });
+        return opportunities;
     }
 
-    @Override
-    public ByteArrayInputStream generateCSVOpportunityReport() {
-
-        List<OpportunityDTO> opportunityList = new ArrayList<>();
-
-         opportunityRepository.findAll().list().forEach(it -> {
-             opportunityList.add(OpportunityDTO
-                     .builder()
-                     .proposalId(it.getProposalId())
-                     .customer(it.getCustomer())
-                     .priceTonner(it.getPriceTonner())
-                     .lastDollarQuotation(it.getLastDollarQuotation())
-                     .build());
-         });
-
-        return CSVHelper.OpportunityToCSV(opportunityList);
-    }
+//    @Override
+//    public ByteArrayInputStream generateCSVOpportunityReport() {
+//
+//        List<OpportunityDTO> opportunityList = new ArrayList<>();
+//
+//         opportunityRepository.findAll().list().forEach(it -> {
+//             opportunityList.add(OpportunityDTO
+//                     .builder()
+//                     .proposalId(it.getProposalId())
+//                     .customer(it.getCustomer())
+//                     .priceTonner(it.getPriceTonner())
+//                     .lastDollarQuotation(it.getLastDollarQuotation())
+//                     .build());
+//         });
+//
+//        return CSVHelper.OpportunityToCSV(opportunityList);
+//    }
 }
